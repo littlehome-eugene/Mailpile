@@ -52,3 +52,8 @@
 {% include("jsapi/message/tooltips.js") %}
 {% include("jsapi/message/ui.js") %}
 
+
+// react
+
+{% include("jsapi/auto/checkbox.js") %}
+  

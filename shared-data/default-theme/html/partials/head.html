@@ -57,5 +57,8 @@
     {{ui_elements_setup('.plugin-activity-%(name)s', get_ui_elements('activities', state, '/'))}}
   );
   </script>
+  <script src="{{ U('/static/js/react.development.js') }}" ></script>
+  <script src="{{ U('/static/js/react-dom.development.js') }}" ></script>
+
   <script src="{{ U('/api/0/jsapi/app.js?ts=', version_identifier(), '-', config.timestamp) }}"></script>
   {% endif %}

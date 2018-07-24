@@ -492,10 +492,16 @@ class SearchResults(dict):
 
         idxs = results[start:start + num]
 
+        # import pdb; pdb.set_trace()
+
         for e in emails or []:
             self.add_email(e, idxs)
 
+        remove_emails = []
+        original_email_mids = [e.msg_mid() for e in self.emails]
+
         done_idxs = set()
+
         while idxs:
             idxs = list(set(idxs) - done_idxs)
             for idx_pos in idxs:
@@ -504,11 +510,48 @@ class SearchResults(dict):
                 self.add_msg_info(b36(idx_pos), msg_info,
                                   full_threads=full_threads, idxs=idxs)
 
+                mid = msg_info[MailIndex.MSG_MID]
+                email = Email(self.idx, int(mid, 36))
+
+                if email.msg_mid() not in original_email_mids:
+                    remove_emails.append(email)
+                    self.add_email(email, idxs)
+
         if emails and len(emails) == 1:
             self['summary'] = emails[0].get_msg_info(MailIndex.MSG_SUBJECT)
 
+        # send to django
+        import requests, copy
+
+        # print 'sending data to django server'
+        # # print data
+
+        send_data = {
+            'metadata': self['data']['metadata'],
+            'messages': self['data']['messages'],
+        }
+
+        # import pdb; pdb.set_trace()
+        r = requests.post(
+            "http://127.0.0.1:10044/mpemail/rest_api/email/get_or_create_list",
+            json=send_data
+        )
+
+        # revert to original messages data
+        # doing reverse of add_email
+        remove_mids = [e.msg_mid() for e in remove_emails]
+
+        self.emails = [e for e in self.emails if e not in remove_emails]
+
+        for mid in remove_mids:
+            if mid in self['message_ids']:
+                self['message_ids'].remove(mid)
+                del self['data']['messages'][mid]
+
+
     def add_msg_info(self, mid, msg_info, full_threads=False, idxs=None):
         # Populate data.metadata
+
         self['data']['metadata'][mid] = self._metadata(msg_info)
 
         # Populate data.thread
@@ -535,9 +578,12 @@ class SearchResults(dict):
                                                           {"searched": False})
 
     def add_email(self, e, idxs=None):
+
+        # import pdb; pdb.set_trace()
         if e not in self.emails:
             self.emails.append(e)
         mid = e.msg_mid()
+
         if mid not in self['data']['messages']:
             self['data']['messages'][mid] = self._message(e)
         if mid not in self['message_ids']:
@@ -957,6 +1003,8 @@ class Search(Command):
                     if (cpos > self._start and
                             cpos < self._start + self._num + 1):
                         pivot_pos = min(cpos, pivot_pos)
+
+                # import pdb; pdb.set_trace()
                 self._emails.append(Email(idx, emid_idx))
             except ValueError:
                 self._email_view_pairs = {}
@@ -1005,6 +1053,8 @@ class Search(Command):
         return reqs
 
     def command(self):
+
+        # import pdb; pdb.set_trace()
         session, idx = self._do_search()
         full_threads = self.data.get('full', False)
         session.displayed = SearchResults(session, idx,

@@ -1,4 +1,5 @@
 <div id="message-{{mid}}" class="pile-message {% for tid in metadata.tag_tids %}{% if result.data.tags[tid].slug == "new" %}{{result.data.tags[tid].slug}}{% endif %}{% endfor %}" data-mid="{{mid}}">
+  {{mid}}
   {%- set activities = (activities or []) + get_ui_elements('email_activities', state) -%}
   {%- if thread|length > 1 %}
     {%- do activities.extend(get_ui_elements('thread_activities', state)) %}
