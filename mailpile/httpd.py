@@ -177,8 +177,8 @@ class HttpRequestHandler(SimpleXMLRPCRequestHandler):
         if mimetype.startswith('text/') and ';' not in mimetype:
             mimetype += ('; charset = utf-8')
         self.send_header('Cache-Control', cachectrl)
-        self.send_header('Content-Security-Policy',
-                         security.http_content_security_policy(self.server))
+        # self.send_header('Content-Security-Policy',
+        #                  security.http_content_security_policy(self.server))
         self.send_header('Content-Type', mimetype)
         self.send_header('X-DNS-Prefetch-Control', x_dns_prefetch)
         self.send_header('X-UA-Compatible', 'IE=Edge')  # For old Windowses
@@ -491,7 +491,7 @@ class HttpRequestHandler(SimpleXMLRPCRequestHandler):
                 print path
 
                 if path == '/in/inbox/':
-                    import pdb; pdb.set_trace()
+                    # import pdb; pdb.set_trace()
                     pass
 
                 results = [cmd.run() for cmd in commands]

@@ -56,4 +56,5 @@
 // react
 
 {% include("jsapi/auto/checkbox.js") %}
-  
+
+{% include("jsapi/auto/action-buttons.js") %}
