@@ -494,6 +494,10 @@ class HttpRequestHandler(SimpleXMLRPCRequestHandler):
                     # import pdb; pdb.set_trace()
                     pass
 
+                if path == '/api/0/message/update/send/':
+                    import pdb; pdb.set_trace()
+                    pass
+
                 results = [cmd.run() for cmd in commands]
 
                 session.ui.mark('Displaying final result')

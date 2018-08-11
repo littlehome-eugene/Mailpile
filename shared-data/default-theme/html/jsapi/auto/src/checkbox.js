@@ -19,39 +19,61 @@ const styles = {
   })
 }
 
+
+let checkedMids = []
+let allMids = []
+
+const check = (mid) => {
+  checkedMids = _.union(checkedMids, [mid])
+}
+
+const uncheck = (mid) => {
+  checkedMids = _.pull(checkedMids, mid)
+}
+  
+
+
 class Checkbox extends React.Component {
   constructor(props) {
     super(props)
+
+    let { mid } = props
+    this.mid = mid
     this.state = {
       checked: false,
     }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  componentWillMount() {
+    allMids = _.union(allMids, [this.mid])
+  }
+
+  componentWillUnmount() {
+    allMids = _.pull(allMids, this.mid)
   }
 
   render() {
     console.log(this.state)
     return (
       <div 
-        onClick={() => this.setState({ checked: !this.state.checked, })}
+        onClick={this.handleClick}
         style={styles.outer}>
         <div style={styles.inner(this.state.checked)} />
       </div>
     )
   }
+
+  handleClick() {
+    let { checked } = this.state
+
+    if (checked) {
+      uncheck(this.mid)
+    } else {
+      check(this.mid)
+    }
+    this.setState({ checked: !checked, })    
+  }
 }
 
-
-$(document).ready(function() {
-
-  document.querySelectorAll('.ann-checkbox')
-  .forEach(domContainer => {
-    // Read the comment ID from a data-* attribute.
-    const mid = parseInt(domContainer.dataset.mid, 10);
-    ReactDOM.render(
-      <Checkbox
-        mid
-        />,
-      domContainer
-    );
-  })
-})
 

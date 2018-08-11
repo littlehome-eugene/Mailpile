@@ -689,7 +689,7 @@ class Email(object):
             except (UnicodeEncodeError, UnicodeDecodeError):
                 charset = 'utf-8'
 
-            tp = MIMEText(new_body, _subtype='plain', _charset=charset)
+            tp = MIMEText(new_body, _subtype='html', _charset=charset)
             tp.signature_info = SignatureInfo(parent=outmsg.signature_info)
             tp.encryption_info = EncryptionInfo(parent=outmsg.encryption_info)
             outmsg.attach(tp)

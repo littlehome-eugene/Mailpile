@@ -102,6 +102,7 @@
      {%- include("partials/pile_compose.html") %}
    {%- else %}
      {%- include("partials/search_item.html") %}
+    <div id="ann-dummy"></div>
    {%- endif %}
  {%- endfor %}
   </tbody>
@@ -168,6 +169,9 @@
 $(document).ready(function() {
   Mailpile.Search.init();
   Mailpile.Tags.init();
+
+  Mailpile.StatusButton.init();
+  Mailpile.ActionButtons.init();
 });
 </script>
 {% endblock %}

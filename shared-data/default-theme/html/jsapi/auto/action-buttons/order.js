@@ -18,7 +18,7 @@ var Order = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Order.__proto__ || Object.getPrototypeOf(Order)).call(this, props));
 
-    _this.handleClick = _this.handleClick.bind();
+    _this.handleClick = _this.handleClick.bind(_this);
     return _this;
   }
 
@@ -26,7 +26,7 @@ var Order = function (_React$Component) {
     key: 'render',
     value: function render() {
       return React.createElement(
-        'button',
+        'div',
         { onClick: this.handleClick },
         '\uC8FC\uBB38'
       );
@@ -38,11 +38,17 @@ var Order = function (_React$Component) {
 
       var url = '/mpemail/rest_api/email/order';
       var baseURL = DJANGO_URL;
+      var dispatch = this.props.dispatch;
+
+
       var config = {
         url: url,
         baseURL: baseURL,
         method: 'POST',
         mode: 'no-cors',
+        data: {
+          mids: checkedMids
+        },
         // headers: {
         //   'Access-Control-Allow-Origin': '*',
         // },
@@ -51,7 +57,12 @@ var Order = function (_React$Component) {
       };
 
       axios(config).then(function (response) {
-        return response;
+        var data = response.data;
+
+        dispatch({
+          type: 'UPDATE_STATUS',
+          status: data
+        });
       });
     }
   }]);
@@ -59,42 +70,13 @@ var Order = function (_React$Component) {
   return Order;
 }(React.Component);
 
-var OrderComplete = function (_React$Component2) {
-  _inherits(OrderComplete, _React$Component2);
+var mapStateToProps = function mapStateToProps(state, ownProps) {
 
-  function OrderComplete(props) {
-    _classCallCheck(this, OrderComplete);
+  return {
+    status: state.status
+  };
+};
 
-    var _this2 = _possibleConstructorReturn(this, (OrderComplete.__proto__ || Object.getPrototypeOf(OrderComplete)).call(this, props));
-
-    _this2.handleClick = _this2.handleClick.bind();
-    return _this2;
-  }
-
-  _createClass(OrderComplete, [{
-    key: 'render',
-    value: function render() {
-      return React.createElement(
-        'button',
-        { onClick: this.handleClick },
-        '\uC8FC\uBB38\uC644\uB8CC'
-      );
-    }
-  }, {
-    key: 'handleClick',
-    value: function handleClick() {
-      console.log('order complete');
-    }
-  }]);
-
-  return OrderComplete;
-}(React.Component);
-
-$(document).ready(function () {
-
-  var domContainer = document.querySelector('#ann-order');
-  ReactDOM.render(React.createElement(Order, null), domContainer);
-
-  var domContainer2 = document.querySelector('#ann-order-complete');
-  ReactDOM.render(React.createElement(OrderComplete, null), domContainer2);
-});
+Order = ReactRedux.connect(mapStateToProps, function (dispatch) {
+  return { dispatch: dispatch };
+})(Order);

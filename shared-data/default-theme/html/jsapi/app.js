@@ -54,7 +54,19 @@
 
 
 // react
+{% include("jsapi/auto/reducers.js") %}
+
+{% include("jsapi/auto/email.js") %}
+
+{% include("jsapi/auto/status.js") %}
 
 {% include("jsapi/auto/checkbox.js") %}
+{% include("jsapi/auto/entry.js") %}
 
-{% include("jsapi/auto/action-buttons.js") %}
+{% include("jsapi/auto/status-buttons.js") %}
+
+{% include("jsapi/auto/action-buttons/order-complete.js") %}
+{% include("jsapi/auto/action-buttons/order.js") %}
+{% include("jsapi/auto/action-buttons/reply.js") %}
+
+{% include("jsapi/auto/action-buttons/action-buttons.js") %}

@@ -28,6 +28,17 @@ var styles = {
   }
 };
 
+var checkedMids = [];
+var allMids = [];
+
+var check = function check(mid) {
+  checkedMids = _.union(checkedMids, [mid]);
+};
+
+var uncheck = function uncheck(mid) {
+  checkedMids = _.pull(checkedMids, mid);
+};
+
 var Checkbox = function (_React$Component) {
   _inherits(Checkbox, _React$Component);
 
@@ -36,40 +47,52 @@ var Checkbox = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
 
+    var mid = props.mid;
+
+    _this.mid = mid;
     _this.state = {
       checked: false
     };
+    _this.handleClick = _this.handleClick.bind(_this);
     return _this;
   }
 
   _createClass(Checkbox, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      allMids = _.union(allMids, [this.mid]);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      allMids = _.pull(allMids, this.mid);
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
       console.log(this.state);
       return React.createElement(
         'div',
         {
-          onClick: function onClick() {
-            return _this2.setState({ checked: !_this2.state.checked });
-          },
+          onClick: this.handleClick,
           style: styles.outer },
         React.createElement('div', { style: styles.inner(this.state.checked) })
       );
+    }
+  }, {
+    key: 'handleClick',
+    value: function handleClick() {
+      var checked = this.state.checked;
+
+
+      if (checked) {
+        uncheck(this.mid);
+      } else {
+        check(this.mid);
+      }
+      this.setState({ checked: !checked });
     }
   }]);
 
   return Checkbox;
 }(React.Component);
-
-$(document).ready(function () {
-
-  document.querySelectorAll('.ann-checkbox').forEach(function (domContainer) {
-    // Read the comment ID from a data-* attribute.
-    var mid = parseInt(domContainer.dataset.mid, 10);
-    ReactDOM.render(React.createElement(Checkbox, {
-      mid: true
-    }), domContainer);
-  });
-});

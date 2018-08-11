@@ -163,7 +163,15 @@
          ></div>
     </a>
   </li>') -%}
-
+{%-   do search_actions.append('
+  <li class="hide">
+    <a class="bulk-action-tag-op" href="#" data-op="order_reply"
+       title="' + _("Archive Selection") +': '+ _("untag completely") +'">
+       <div
+         id="ann-songjang"
+         ></div>
+    </a>
+  </li>') -%}
 {%- endif -%}
 
 {%- set hard_coded_display_modes = safe(display_things|join('')) -%}

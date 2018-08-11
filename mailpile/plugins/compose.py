@@ -984,6 +984,8 @@ class Update(CompositionCommand):
                                 Attach.HTTP_POST_VARS)
 
     def command(self, create=True, outbox=False):
+
+        import pdb; pdb.set_trace()
         session, config, idx = self.session, self.session.config, self._idx()
         email_updates = self._get_email_updates(idx,
                                                 create=create,
