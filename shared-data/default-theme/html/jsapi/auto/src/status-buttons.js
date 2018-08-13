@@ -29,6 +29,7 @@ Mailpile.StatusButton.init = function() {
       </ReactRedux.Provider>,
       domContainer
     );
+
 }
 // })
 

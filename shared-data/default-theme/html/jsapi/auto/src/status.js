@@ -6,6 +6,7 @@ const statusStyles = {
     width: 30,
     height: 30,
     cursor: 'pointer',
+    display:'inline-block',
   },
   inner: status => {
     let backgroundColor
@@ -61,9 +62,10 @@ class AutoOrderStatus extends React.Component {
 
     let tooltipNode = null
 
+    let tooltipId = `tooltip-${this.mid}`
     if (autoOrderStatus == 'process_fail') {
       tooltipNode = (
-        <ReactTooltip id='happyFace' type='error'>
+        <ReactTooltip id={tooltipId} type='error'>
           <span>{status[this.mid].error}</span>
         </ReactTooltip>
       )
@@ -73,7 +75,7 @@ class AutoOrderStatus extends React.Component {
     return (
       <div 
         style={statusStyles.outer}>
-        <a data-tip data-for='happyFace'>  
+        <a data-tip data-for={tooltipId}>  
           <div style={statusStyles.inner(autoOrderStatus)} />
         </a>
         {tooltipNode}
@@ -107,6 +109,7 @@ AutoOrderStatus = connect(
 class AutoReplyStatus extends React.Component {
   constructor(props) {
     super(props)
+    this.mid = props.mid
   }
 
   render() {
@@ -117,7 +120,7 @@ class AutoReplyStatus extends React.Component {
     if (!status[this.mid]) {
       auto_Status = 'initial'
     } else {
-      if (status[this.mid].auto_order_status) {
+      if (status[this.mid].auto_reply_status) {
         auto_Status = status[this.mid].auto_reply_status
       }
     }

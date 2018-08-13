@@ -27,7 +27,7 @@ var Order = function (_React$Component) {
     value: function render() {
       return React.createElement(
         'div',
-        { onClick: this.handleClick },
+        { onClick: this.handleClick, style: { padding: 5, margin: 0, backgroundColor: 'red', color: 'white' } },
         '\uC8FC\uBB38'
       );
     }
@@ -39,6 +39,7 @@ var Order = function (_React$Component) {
       var url = '/mpemail/rest_api/email/order';
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
+      var checkedMids = this.props.checkedMids;
 
 
       var config = {
@@ -73,6 +74,7 @@ var Order = function (_React$Component) {
 var mapStateToProps = function mapStateToProps(state, ownProps) {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   };
 };

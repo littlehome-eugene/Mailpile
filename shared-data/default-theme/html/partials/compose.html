@@ -219,6 +219,9 @@
     Mailpile.Composer.init('{{mid}}',
                            {{ editing_strings|json|safe }},
                            {{ editing_addresses|json|safe }});
-  });
+    });
+
+    $('.compose-text').froalaEditor({ fullPage: true, useClasses: false})
+
   </script>
 </div>

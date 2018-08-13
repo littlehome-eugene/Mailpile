@@ -6481,6 +6481,12 @@ body {
 .bulk-actions li.hide {
   visibility: hidden;
 }
+
+.bulk-actions #ann-order, #ann-order-complete, #ann-songjang{
+    margin:0;
+}
+
+
 /* Content View */
 #content-tall-view,
 #content-view {

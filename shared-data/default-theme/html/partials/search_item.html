@@ -53,6 +53,9 @@
 {%- endif %}
     data-mid="{{mid}}">
 <td class="draggable"></td>
+  <td class="checkbox hide">
+    <input type="checkbox" name="mid" value="{{mid}}">
+  </td>
 <td><div class='ann-checkbox' data-mid="{{mid}}"></div></td>
 {% if message or message_errors %}
   <td class="message-nav">
@@ -316,9 +319,6 @@
     <span title="{{metadata.timestamp|friendly_time}}, {{metadata.timestamp|friendly_datetime}}">
       {{metadata.timestamp|elapsed_datetime}}
     </span>
-  </td>
-  <td class="checkbox">
-    <input type="checkbox" name="mid" value="{{mid}}">
   </td>
 </tr>
 {% endif %}

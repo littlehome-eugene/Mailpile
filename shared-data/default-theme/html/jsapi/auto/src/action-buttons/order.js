@@ -12,7 +12,7 @@ class Order extends React.Component {
 
   render() {
     return (
-      <div onClick={this.handleClick}>
+      <div onClick={this.handleClick} style={{padding:5,margin:0,backgroundColor:'red',color:'white'}}>
         주문
       </div>
     )
@@ -24,6 +24,7 @@ class Order extends React.Component {
     let url = '/mpemail/rest_api/email/order'
     let baseURL = DJANGO_URL
     let { dispatch } = this.props
+      let { checkedMids } = this.props
     
     let config = {
       url,
@@ -54,6 +55,7 @@ class Order extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   }
 }

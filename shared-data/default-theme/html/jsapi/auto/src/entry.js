@@ -56,3 +56,18 @@ Entry = ReactRedux.connect(
     return { dispatch }
   }
 )(Entry)
+
+
+$.propHooks.checked = {
+    set: function (el, value) {
+        if (el.checked !== value) {
+            trigger = true;
+        } else {
+            trigger = false;
+        }
+        el.checked = value;
+        if (trigger) {
+            $(el).trigger('change');
+        }
+    }
+};

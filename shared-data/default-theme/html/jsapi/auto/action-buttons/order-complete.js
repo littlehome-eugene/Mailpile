@@ -61,16 +61,20 @@ var OrderComplete = function (_React$Component) {
     key: 'render',
     value: function render() {
       var status = this.props.status;
+      var checkedMids = this.props.checkedMids;
 
 
       var success_count = 0;
       for (var mid in status) {
-        if (status[mid].auto_order_status == 'process_success') {
+        if (status[mid].auto_order_status == 'process_success' && _.includes(checkedMids, mid)) {
+
           success_count += 1;
         }
       }
 
       var backgroundColor = 'grey';
+      var color = 'white';
+
       var clickHandler = this.dummy;
       if (success_count > 0) {
         backgroundColor = 'blue';
@@ -79,13 +83,13 @@ var OrderComplete = function (_React$Component) {
 
       return React.createElement(
         'div',
-        null,
+        { style: { margin: 0 } },
         React.createElement(
           'div',
           {
             onClick: clickHandler,
             style: {
-              backgroundColor: backgroundColor
+              backgroundColor: backgroundColor, color: color, padding: 5, margin: 0
             }
           },
           '\uC8FC\uBB38 \uC644\uB8CC'
@@ -96,7 +100,8 @@ var OrderComplete = function (_React$Component) {
             isOpen: this.state.modalIsOpen,
             onAfterOpen: this.afterOpenModal,
             onRequestClose: this.closeModal,
-            style: customStyles
+            style: customStyles,
+            ariaHideApp: false
           },
           React.createElement(
             'h2',
@@ -155,6 +160,7 @@ var OrderComplete = function (_React$Component) {
 var mapStateToProps = function mapStateToProps(state, ownProps) {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   };
 };

@@ -24,11 +24,12 @@
         {% set attachments = message.attachments %}
         {% set editing_strings = message.editing_strings or {} %}
         {% set editing_addresses = result.data.addresses %}
+        hello2
         {% include("partials/compose.html") %}
       {% endif %}
     {% endif %}
   {% endfor %}
-  
+
   {% if found_requested and not found_editable %}
     {{ mailpile('http/redirect/url_thread', found_requested[0]) }}
   {% endif %}

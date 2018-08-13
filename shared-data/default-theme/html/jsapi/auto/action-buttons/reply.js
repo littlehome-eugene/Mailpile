@@ -51,15 +51,17 @@ var Reply = function (_React$Component) {
     value: function render() {
       var status = this.props.status;
 
+      var checkedMids = this.props.checkedMids;
 
       var success_count = 0;
       for (var mid in status) {
-        if (status[mid].auto_order_status == 'complete' && (status[mid].auto_reply_status == 'initial' || status[mid].auto_reply_status == 'process_fail')) {
+        if (status[mid].auto_order_status == 'complete' && _.includes(checkedMids, mid) && (status[mid].auto_reply_status == 'initial' || status[mid].auto_reply_status == 'process_fail')) {
           success_count += 1;
         }
       }
 
       var backgroundColor = 'grey';
+      var color = 'white';
       var clickHandler = this.dummy;
       if (success_count > 0) {
         backgroundColor = 'blue';
@@ -68,13 +70,13 @@ var Reply = function (_React$Component) {
 
       return React.createElement(
         'div',
-        null,
+        { style: { margin: 0 } },
         React.createElement(
           'div',
           {
             onClick: clickHandler,
             style: {
-              backgroundColor: backgroundColor
+              backgroundColor: backgroundColor, color: color, padding: 5, margin: 0
             }
           },
           '\uC1A1\uC7A5 \uBC1C\uC1A1'
@@ -85,7 +87,8 @@ var Reply = function (_React$Component) {
             isOpen: this.state.modalIsOpen,
             onAfterOpen: this.afterOpenModal,
             onRequestClose: this.closeModal,
-            style: customStyles
+            style: customStyles,
+            ariaHideApp: false
           },
           React.createElement(
             'h2',
@@ -112,6 +115,7 @@ var Reply = function (_React$Component) {
       var url = '/mpemail/rest_api/email/reply';
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
+      var checkedMids = this.props.checkedMids;
 
 
       var config = {
@@ -144,6 +148,7 @@ var Reply = function (_React$Component) {
 var mapStateToProps = function mapStateToProps(state, ownProps) {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   };
 };

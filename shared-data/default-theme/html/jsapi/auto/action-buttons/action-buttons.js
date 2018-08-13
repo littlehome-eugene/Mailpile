@@ -20,11 +20,6 @@ Mailpile.ActionButtons.init = function () {
   ), domContainer2);
 
   var domContainer3 = document.querySelector('#ann-songjang');
-  ReactDOM.render(React.createElement(
-    ReactRedux.Provider,
-    { store: store },
-    React.createElement(Reply, null)
-  ), domContainer3);
-  
+  ReactDOM.render(React.createElement(ReactRedux.Provider, { store: store }, React.createElement(Reply, null)), domContainer3);
 };
 // })

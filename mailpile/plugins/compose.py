@@ -272,6 +272,7 @@ class CompositionCommand(AddComposeMethods(Search)):
             return self._error(_('Message is not editable'))
 
     def _real_edit_messages(self, emails, new=True, tag=True, ephemeral=False):
+
         session, idx = self.session, self._idx()
         if (not ephemeral and
                 (session.ui.edit_messages(session, emails) or not new)):
@@ -985,7 +986,7 @@ class Update(CompositionCommand):
 
     def command(self, create=True, outbox=False):
 
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         session, config, idx = self.session, self.session.config, self._idx()
         email_updates = self._get_email_updates(idx,
                                                 create=create,

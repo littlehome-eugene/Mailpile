@@ -170,8 +170,11 @@ $(document).ready(function() {
   Mailpile.Search.init();
   Mailpile.Tags.init();
 
+  if (window.location.pathname.startsWith('/in/inbox/') && window.location.search == '') {
+
   Mailpile.StatusButton.init();
   Mailpile.ActionButtons.init();
+  }
 });
 </script>
 {% endblock %}

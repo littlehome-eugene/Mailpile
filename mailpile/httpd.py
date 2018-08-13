@@ -440,6 +440,13 @@ class HttpRequestHandler(SimpleXMLRPCRequestHandler):
                 if path.startswith('/message/download/'):
                     need_auth = False
 
+                if path.startswith('/api/0/message/update/send/'):
+                    need_auth = False
+
+                if path.startswith('/api/0/message/reply/composer'):
+                    # import pdb; pdb.set_trace()
+                    need_auth = False
+
                 commands = UrlMap(session).map(
                     self, method, path, query_data, post_data,
                     authenticate=need_auth)
@@ -488,14 +495,14 @@ class HttpRequestHandler(SimpleXMLRPCRequestHandler):
                 LIVE_HTTP_REQUESTS -= hang_fix
 
                 session.ui.mark('Running %d commands' % len(commands))
-                print path
+                # print path
 
                 if path == '/in/inbox/':
                     # import pdb; pdb.set_trace()
                     pass
 
                 if path == '/api/0/message/update/send/':
-                    import pdb; pdb.set_trace()
+                    # import pdb; pdb.set_trace()
                     pass
 
                 results = [cmd.run() for cmd in commands]

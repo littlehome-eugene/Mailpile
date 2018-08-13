@@ -12,7 +12,8 @@ var statusStyles = {
     border: '2px solid gray',
     width: 30,
     height: 30,
-    cursor: 'pointer'
+    cursor: 'pointer',
+    display: 'inline-block'
   },
   inner: function inner(status) {
     var backgroundColor = void 0;
@@ -71,10 +72,11 @@ var AutoOrderStatus = function (_React$Component) {
 
       var tooltipNode = null;
 
+      var tooltipId = 'tooltip-' + this.mid;
       if (autoOrderStatus == 'process_fail') {
         tooltipNode = React.createElement(
           ReactTooltip,
-          { id: 'happyFace', type: 'error' },
+          { id: tooltipId, type: 'error' },
           React.createElement(
             'span',
             null,
@@ -89,7 +91,7 @@ var AutoOrderStatus = function (_React$Component) {
           style: statusStyles.outer },
         React.createElement(
           'a',
-          { 'data-tip': true, 'data-for': 'happyFace' },
+          { 'data-tip': true, 'data-for': tooltipId },
           React.createElement('div', { style: statusStyles.inner(autoOrderStatus) })
         ),
         tooltipNode
@@ -121,7 +123,10 @@ var AutoReplyStatus = function (_React$Component2) {
   function AutoReplyStatus(props) {
     _classCallCheck(this, AutoReplyStatus);
 
-    return _possibleConstructorReturn(this, (AutoReplyStatus.__proto__ || Object.getPrototypeOf(AutoReplyStatus)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (AutoReplyStatus.__proto__ || Object.getPrototypeOf(AutoReplyStatus)).call(this, props));
+
+    _this2.mid = props.mid;
+    return _this2;
   }
 
   _createClass(AutoReplyStatus, [{
@@ -134,7 +139,7 @@ var AutoReplyStatus = function (_React$Component2) {
       if (!status[this.mid]) {
         auto_Status = 'initial';
       } else {
-        if (status[this.mid].auto_order_status) {
+        if (status[this.mid].auto_reply_status) {
           auto_Status = status[this.mid].auto_reply_status;
         }
       }

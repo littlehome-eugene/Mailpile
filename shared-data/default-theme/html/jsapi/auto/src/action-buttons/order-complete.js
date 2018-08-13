@@ -43,15 +43,19 @@ class OrderComplete extends React.Component {
   render() {
 
     let { status } = this.props
+      let { checkedMids } = this.props
 
     let success_count = 0
     for (var mid in status) {
-      if (status[mid].auto_order_status == 'process_success') {
+      if (status[mid].auto_order_status == 'process_success' && _.includes(checkedMids, mid)) {
+        
         success_count += 1
       }
     }
 
     let backgroundColor = 'grey'
+    let color = 'white'
+
     let clickHandler = this.dummy
     if (success_count > 0) {
       backgroundColor = 'blue'
@@ -59,11 +63,11 @@ class OrderComplete extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{margin:0}}>
         <div
           onClick={clickHandler}
           style={{
-            backgroundColor
+            backgroundColor,color,padding:5,margin:0
           }}
           >주문 완료</div>
         <ReactModal
@@ -71,6 +75,7 @@ class OrderComplete extends React.Component {
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
+          ariaHideApp={false}
         >
 
           <h2>{success_count} 개를 주문 완료하시겠습니까?</h2>
@@ -116,6 +121,7 @@ class OrderComplete extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   }
 }

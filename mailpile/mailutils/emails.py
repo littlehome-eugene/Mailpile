@@ -646,6 +646,7 @@ class Email(object):
         return att
 
     def update_from_string(self, session, data, final=False):
+
         if not self.is_editable():
             raise NotEditableError(_('Message or mailbox is read-only.'))
 

@@ -71,3 +71,17 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
 Entry = ReactRedux.connect(mapStateToProps, function (dispatch) {
   return { dispatch: dispatch };
 })(Entry);
+
+$.propHooks.checked = {
+  set: function set(el, value) {
+    if (el.checked !== value) {
+      trigger = true;
+    } else {
+      trigger = false;
+    }
+    el.checked = value;
+    if (trigger) {
+      $(el).trigger('change');
+    }
+  }
+};

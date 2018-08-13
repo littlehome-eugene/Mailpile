@@ -1,5 +1,15 @@
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
-class Reply extends React.Component {
+class OrderComplete extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -33,21 +43,17 @@ class Reply extends React.Component {
   render() {
 
     let { status } = this.props
-    var checkedMids = this.props.checkedMids;
+      let { checkedMids } = this.props
 
     let success_count = 0
     for (var mid in status) {
-      if (status[mid].auto_order_status == 'complete' &&
-          _.includes(checkedMids, mid) &&          
-          (status[mid].auto_reply_status == 'initial' ||
-           status[mid].auto_reply_status == 'process_fail')
-         ) {
+      if (status[mid].auto_order_status == 'process_success' && _.includes(checkedMids, mid)) {
+        
         success_count += 1
       }
     }
 
-    let backgroundColor = 'grey'
-    let color = 'white'
+    let backgroundColor = '#aaaaaa'
     let clickHandler = this.dummy
     if (success_count > 0) {
       backgroundColor = 'blue'
@@ -58,19 +64,18 @@ class Reply extends React.Component {
       <div style={{margin:0}}>
         <div
           onClick={clickHandler}
-          style={{
-            backgroundColor,color,padding:5,margin:0
-          }}
-          >송장 발송</div>
+          style={[
+            backgroundColor
+          ],{padding:5, backgroundColor:backgroundColor}
+          >주문 완료</div>
         <ReactModal
           isOpen={this.state.modalIsOpen}
           onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles}
-          ariaHideApp={false}
         >
 
-          <h2>{success_count}개 거래처에 송장번호를 메일로 보내겠습니까?</h2>
+          <h2>{success_count} 개를 주문 완료하시겠습니까?</h2>
           <button onClick={this.closeModal}>취소</button>
           <button onClick={this.clickComplete}>확인</button>
         </ReactModal>
@@ -78,11 +83,11 @@ class Reply extends React.Component {
     )
   }
 
+
   clickComplete() {
-    let url = '/mpemail/rest_api/email/reply'
+    let url = '/mpemail/rest_api/email/order_complete'
     let baseURL = DJANGO_URL
     let { dispatch } = this.props
-    let { checkedMids } = this.props
     
     let config = {
       url,
@@ -113,16 +118,16 @@ class Reply extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 
   return {
-    checkedMids: state.checkedMids,
+
     status: state.status
   }
 }
 
-Reply = ReactRedux.connect(
+OrderComplete = ReactRedux.connect(
   mapStateToProps,
   dispatch => {
     return { dispatch }
   }
-)(Reply)
+)(OrderComplete)
 
 
