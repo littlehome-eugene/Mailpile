@@ -27,6 +27,17 @@ var reducers = function reducers() {
         checkedMids: checkedMids
       });
 
+    case 'CHECK_ALL':
+      checkedMids = action.mids;
+      return _.merge({}, state, {
+        checkedMids: checkedMids
+      });
+    case 'UNCHECK_ALL':
+      state = Object.assign({}, state, {
+        checkedMids: []
+      });
+      return state;
+
     default:
       return state;
   }

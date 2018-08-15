@@ -11,6 +11,26 @@
         hard_coded_display_modes) %}
 <nav class="sub-navigation clearfix">
   <ul class="left horizontal">
+    <li>
+      <div
+        id="ann-checkbox-all"
+        ></div>
+    </li>
+    <li>
+        <div
+          id="ann-order"
+          ></div>
+      </li>
+      <li>
+        <div
+          id="ann-order-complete"
+          ></div>
+      </li>
+      <li>
+        <div
+          id="ann-songjang"
+          ></div>
+      </li>
   {{ hard_coded_activities|safe }}{% for elem in activities %}
     <li class="btn-activity-{{elem.name}} {{elem.class}}
         {%- if state.command_url == elem.url %} navigation-on{% endif %}">
@@ -78,6 +98,10 @@
   </ul>
 </nav>
 {%- endif %}
+  <div class="ann-actions">
+    <ul class="horizontal">
+    </ul>
+  </div>
 {%- if selection_actions or hard_coded_selection_actions or have_initial_prompt %}
 <div class="bulk-actions clearfix mobile-hide">
   {%- if have_initial_prompt or not tools_disable_checkbox %}

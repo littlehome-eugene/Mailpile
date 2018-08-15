@@ -170,11 +170,14 @@ $(document).ready(function() {
   Mailpile.Search.init();
   Mailpile.Tags.init();
 
-  if (window.location.pathname.startsWith('/in/inbox/') && window.location.search == '') {
+  {# if (window.location.pathname.startsWith('/in/inbox/')) { #}
+  allMids = [];
+  store = Redux.createStore(reducers)
 
   Mailpile.StatusButton.init();
+
   Mailpile.ActionButtons.init();
-  }
+  {# } #}
 });
 </script>
 {% endblock %}

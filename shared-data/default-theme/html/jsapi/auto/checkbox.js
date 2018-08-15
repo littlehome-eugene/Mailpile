@@ -29,125 +29,36 @@ var styles = {
   }
 };
 
-var allMids = [];
-
-var CheckboxInternal = function (_React$Component) {
-  _inherits(CheckboxInternal, _React$Component);
-
-  function CheckboxInternal() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, CheckboxInternal);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CheckboxInternal.__proto__ || Object.getPrototypeOf(CheckboxInternal)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
-      isChecked: false
-    }, _this.toggleCheckboxChange = function () {
-      var _this$props = _this.props,
-          handleCheckboxChange = _this$props.handleCheckboxChange,
-          label = _this$props.label;
-      var isChecked = _this.state.isChecked;
-
-      _this.setState({
-        isChecked: !isChecked
-      });
-      // this.setState(({ isChecked }) => (
-      //   {
-      //     isChecked: !isChecked,
-      //   }
-      // ));
-
-      handleCheckboxChange(!isChecked);
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(CheckboxInternal, [{
-    key: 'render',
-    value: function render() {
-      var label = this.props.label;
-      var isChecked = this.state.isChecked;
-      var mid = this.props.mid;
-
-
-      return React.createElement(
-        'div',
-        { className: 'checkbox' },
-        React.createElement(
-          'label',
-          null,
-          React.createElement('input', {
-            type: 'checkbox',
-            name: 'mid',
-            value: mid,
-            checked: isChecked,
-            onChange: this.toggleCheckboxChange
-          }),
-          label
-        )
-      );
-    }
-  }]);
-
-  return CheckboxInternal;
-}(React.Component);
-
-var Checkbox = function (_React$Component2) {
-  _inherits(Checkbox, _React$Component2);
+var Checkbox = function (_React$Component) {
+  _inherits(Checkbox, _React$Component);
 
   function Checkbox(props) {
     _classCallCheck(this, Checkbox);
 
-    var _this2 = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Checkbox.__proto__ || Object.getPrototypeOf(Checkbox)).call(this, props));
 
     var mid = props.mid;
 
-    _this2.mid = mid;
-    _this2.state = {
+    _this.mid = mid;
+    _this.state = {
       checked: false
     };
-    _this2.handleClick = _this2.handleClick.bind(_this2);
-    _this2.handleChange = _this2.handleChange.bind(_this2);
-    _this2.dummy = _this2.dummy.bind(_this2);
-    var dispatch = _this2.props.dispatch;
+    _this.handleClick = _this.handleClick.bind(_this);
+    _this.handleChange = _this.handleChange.bind(_this);
+    _this.dummy = _this.dummy.bind(_this);
+    var dispatch = _this.props.dispatch;
 
 
-    var self = _this2;
-
-    //     $(document).on("change", `input[name=mid][value=${mid}]`, function() {
-    //     // $(`input[name=mid][value=${mid}]`).change(function(){
-    //     if($(this).is(':checked')) {
-    //       // Checkbox is checked..
-    //       console.log('checked')
-    //       dispatch({
-    //         type: 'CHECK_MID',
-    //         mid: self.mid
-    //       })
-    //       self.setState({ checked: true })    
-
-    //     } else {
-    //       console.log('unchecked')
-    //       // Checkbox is not checked..
-    //             dispatch({
-    //         type: 'UNCHECK_MID',
-    //         mid: self.mid
-    //       })
-    //       self.setState({ checked: false })    
-
-    //     }
-    // })
-
-    _this2.timeoutHandle = setTimeout(function () {
-      _this2.dummy();
-    }, 100);
-    return _this2;
+    _this.componentCleanup = _this.componentCleanup.bind(_this);
+    return _this;
   }
 
   _createClass(Checkbox, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      window.addEventListener('beforeunload', this.componentCleanup);
+    }
+  }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
       allMids = _.union(allMids, [this.mid]);
@@ -155,6 +66,12 @@ var Checkbox = function (_React$Component2) {
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
+      this.componentCleanup();
+      window.removeEventListener('beforeunload', this.componentCleanup);
+    }
+  }, {
+    key: 'componentCleanup',
+    value: function componentCleanup() {
       allMids = _.pull(allMids, this.mid);
     }
   }, {
@@ -189,6 +106,14 @@ var Checkbox = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
+      var checkedMids = this.props.checkedMids;
+
+      var isChecked = false;
+
+      if (_.includes(checkedMids, this.mid)) {
+        isChecked = true;
+      }
+
       return React.createElement(
         'div',
         {
@@ -199,7 +124,7 @@ var Checkbox = function (_React$Component2) {
           type: 'checkbox',
           name: 'mid',
           value: this.mid,
-          checked: this.state.checked,
+          checked: isChecked,
           ref: 'checkbox'
         })
       );
@@ -247,6 +172,7 @@ var Checkbox = function (_React$Component2) {
 var mapStateToProps = function mapStateToProps(state, ownProps) {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   };
 };

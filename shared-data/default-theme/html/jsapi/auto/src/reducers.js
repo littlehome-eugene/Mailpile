@@ -24,6 +24,17 @@ const reducers = (state=initialState, action) => {
       checkedMids
     })
 
+  case 'CHECK_ALL':
+    checkedMids = action.mids
+    return _.merge({}, state, {
+      checkedMids
+    })
+  case 'UNCHECK_ALL':
+    state = {...state,
+             checkedMids: []
+            }
+    return state
+
   default:
     return state
   }

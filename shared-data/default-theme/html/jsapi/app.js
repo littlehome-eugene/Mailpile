@@ -65,6 +65,7 @@
 
 {% include("jsapi/auto/status-buttons.js") %}
 
+{% include("jsapi/auto/action-buttons/checkbox-all.js") %}
 {% include("jsapi/auto/action-buttons/order-complete.js") %}
 {% include("jsapi/auto/action-buttons/order.js") %}
 {% include("jsapi/auto/action-buttons/reply.js") %}

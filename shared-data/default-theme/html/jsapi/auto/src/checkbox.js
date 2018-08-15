@@ -21,51 +21,6 @@ const styles = {
 }
 
 
-let allMids = []
-
-
-class CheckboxInternal extends React.Component {
-  state = {
-    isChecked: false,
-  }
-
-  toggleCheckboxChange = () => {
-    const { handleCheckboxChange, label } = this.props;
-    const { isChecked } = this.state;
-    this.setState({
-      isChecked: !isChecked
-    })
-    // this.setState(({ isChecked }) => (
-    //   {
-    //     isChecked: !isChecked,
-    //   }
-    // ));
-
-    handleCheckboxChange(!isChecked);
-  }
-
-  render() {
-    const { label } = this.props;
-    const { isChecked } = this.state;
-    const { mid } = this.props
-
-    return (
-      <div className="checkbox">
-        <label>
-          <input
-            type="checkbox"
-            name='mid'
-                            value={mid}
-                            checked={isChecked}
-                            onChange={this.toggleCheckboxChange}
-                        />
-
-          {label}
-        </label>
-      </div>
-    );
-  }
-}
 
 
 
@@ -83,34 +38,11 @@ class Checkbox extends React.Component {
     this.dummy = this.dummy.bind(this)
     const { dispatch } = this.props
 
-    var self = this
+    this.componentCleanup = this.componentCleanup.bind(this)
+  }
 
-//     $(document).on("change", `input[name=mid][value=${mid}]`, function() {
-//     // $(`input[name=mid][value=${mid}]`).change(function(){
-//     if($(this).is(':checked')) {
-//       // Checkbox is checked..
-//       console.log('checked')
-//       dispatch({
-//         type: 'CHECK_MID',
-//         mid: self.mid
-//       })
-//       self.setState({ checked: true })    
-
-//     } else {
-//       console.log('unchecked')
-//       // Checkbox is not checked..
-//             dispatch({
-//         type: 'UNCHECK_MID',
-//         mid: self.mid
-//       })
-//       self.setState({ checked: false })    
-
-//     }
-    // })
-
-    this.timeoutHandle = setTimeout(()=>{
-      this.dummy()
-    }, 100);
+  componentDidMount() {
+    window.addEventListener('beforeunload', this.componentCleanup);
   }
 
   componentWillMount() {
@@ -118,6 +50,11 @@ class Checkbox extends React.Component {
   }
 
   componentWillUnmount() {
+    this.componentCleanup()
+    window.removeEventListener('beforeunload', this.componentCleanup); 
+  }
+
+  componentCleanup() {
     allMids = _.pull(allMids, this.mid)
   }
 
@@ -153,6 +90,13 @@ class Checkbox extends React.Component {
   }
 
   render() {
+    let { checkedMids } = this.props
+    let isChecked = false
+
+    if (_.includes(checkedMids, this.mid)) {
+      isChecked = true
+    }
+    
     return <div
     className='checkbox'
     onClick={this.handleClick}
@@ -162,7 +106,7 @@ class Checkbox extends React.Component {
     type="checkbox"
     name='mid'
     value={this.mid}
-    checked={this.state.checked}
+    checked={isChecked}
     ref='checkbox'
       />
 
@@ -207,6 +151,7 @@ class Checkbox extends React.Component {
 const mapStateToProps = (state, ownProps) => {
 
   return {
+    checkedMids: state.checkedMids,
     status: state.status
   }
 }

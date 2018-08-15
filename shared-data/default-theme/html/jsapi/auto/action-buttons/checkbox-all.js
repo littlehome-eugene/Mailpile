@@ -6,61 +6,61 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Entry = function (_React$Component) {
-  _inherits(Entry, _React$Component);
+var CheckboxAll = function (_React$Component) {
+  _inherits(CheckboxAll, _React$Component);
 
-  function Entry(props) {
-    _classCallCheck(this, Entry);
+  function CheckboxAll(props) {
+    _classCallCheck(this, CheckboxAll);
 
-    var _this = _possibleConstructorReturn(this, (Entry.__proto__ || Object.getPrototypeOf(Entry)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (CheckboxAll.__proto__ || Object.getPrototypeOf(CheckboxAll)).call(this, props));
 
-    _this.fetchStatus = _this.fetchStatus.bind(_this);
+    _this.state = {
+      checked: false
+    };
+    _this.handleClick = _this.handleClick.bind(_this);
+
     return _this;
   }
 
-  _createClass(Entry, [{
-    key: 'componentDidMount',
-    value: function componentDidMount() {
-      this.fetchStatus();
+  _createClass(CheckboxAll, [{
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        {
+          className: 'checkbox',
+          onClick: this.handleClick
+        },
+        React.createElement('input', {
+          type: 'checkbox',
+          name: 'mid-all',
+          checked: this.state.checked,
+          ref: 'checkbox'
+        })
+      );
     }
   }, {
-    key: 'fetchStatus',
-    value: function fetchStatus() {
-      var url = '/mpemail/rest_api/email/status';
-      var baseURL = DJANGO_URL;
+    key: 'handleClick',
+    value: function handleClick() {
+      var checked = this.state.checked;
       var dispatch = this.props.dispatch;
 
 
-      var config = {
-        url: url,
-        baseURL: baseURL,
-        method: 'POST',
-        mode: 'no-cors',
-        data: {
-          mids: allMids
-        },
-        credentials: 'same-origin'
-      };
-
-      axios(config).then(function (response) {
-        var data = response.data;
-
+      if (checked) {
         dispatch({
-          type: 'UPDATE_STATUS',
-          status: data
+          type: 'UNCHECK_ALL'
         });
-      }).catch(function (error) {
-        console.log(error.response);
-      });
-    }
-  }, {
-    key: 'render',
-    value: function render() {
-      return React.createElement('div', null);
+      } else {
+        dispatch({
+          type: 'CHECK_ALL',
+          mids: allMids
+        });
+      }
+      this.setState({ checked: !checked });
     }
   }]);
 
-  return Entry;
+  return CheckboxAll;
 }(React.Component);
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
@@ -70,20 +70,6 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   };
 };
 
-Entry = ReactRedux.connect(mapStateToProps, function (dispatch) {
+CheckboxAll = ReactRedux.connect(mapStateToProps, function (dispatch) {
   return { dispatch: dispatch };
-})(Entry);
-
-$.propHooks.checked = {
-  set: function set(el, value) {
-    if (el.checked !== value) {
-      trigger = true;
-    } else {
-      trigger = false;
-    }
-    el.checked = value;
-    if (trigger) {
-      $(el).trigger('change');
-    }
-  }
-};
+})(CheckboxAll);

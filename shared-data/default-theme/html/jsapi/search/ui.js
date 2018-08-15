@@ -22,7 +22,7 @@ Mailpile.pile_action_select = function($item, partial) {
     // Style & Select Checkbox
     // $item.find('td.checkbox input[type=checkbox]').prop('checked', true);
     $item.find('td.checkbox input[type=checkbox]').prop('checked', true);
-    $item.find('div.checkbox input[type=checkbox]').prop('checked', true);
+    // $item.find('div.checkbox input[type=checkbox]').prop('checked', true);
 
     // Update UI
     if (partial) {
@@ -38,7 +38,7 @@ Mailpile.pile_action_select = function($item, partial) {
 Mailpile.pile_action_unselect = function($item, partial) {
     // Style & Unselect Checkbox
     $item.find('td.checkbox input[type=checkbox]').prop('checked', false);
-    $item.find('div.checkbox input[type=checkbox]').prop('checked', false);
+    // $item.find('div.checkbox input[type=checkbox]').prop('checked', false);
 
     // Update UI
     if (partial) {

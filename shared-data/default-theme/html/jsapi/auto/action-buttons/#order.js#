@@ -1,3 +1,5 @@
+'use strict';
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -6,17 +8,18 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Reply = function (_React$Component) {
-  _inherits(Reply, _React$Component);
+var DJANGO_URL = 'http://zibann.kr:10044';
 
-  function Reply(props) {
-    _classCallCheck(this, Reply);
+var Order = function (_React$Component) {
+  _inherits(Order, _React$Component);
 
-    var _this = _possibleConstructorReturn(this, (Reply.__proto__ || Object.getPrototypeOf(Reply)).call(this, props));
+  function Order(props) {
+    _classCallCheck(this, Order);
+
+    var _this = _possibleConstructorReturn(this, (Order.__proto__ || Object.getPrototypeOf(Order)).call(this, props));
 
     _this.state = {
-      modalIsOpen: false,
-      resultModalIsOpen: false
+      modalIsOpen: false
     };
 
     _this.openModal = _this.openModal.bind(_this);
@@ -24,10 +27,11 @@ var Reply = function (_React$Component) {
     _this.closeModal = _this.closeModal.bind(_this);
     _this.clickComplete = _this.clickComplete.bind(_this);
     _this.dummy = _this.dummy.bind(_this);
+
     return _this;
   }
 
-  _createClass(Reply, [{
+  _createClass(Order, [{
     key: 'openModal',
     value: function openModal() {
       this.setState({ modalIsOpen: true });
@@ -54,19 +58,18 @@ var Reply = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      var checkedMids = this.props.checkedMids;
       var status = this.props.status;
 
-      var checkedMids = this.props.checkedMids;
 
       var success_count = 0;
       for (var mid in status) {
-        if (status[mid].auto_order_status == 'complete' && _.includes(checkedMids, mid) && (status[mid].auto_reply_status == 'initial' || status[mid].auto_reply_status == 'process_fail')) {
+        if ((status[mid].auto_order_status == 'process_fail' || status[mid].auto_order_status == 'initial') && _.includes(checkedMids, mid)) {
+
           success_count += 1;
         }
       }
 
-      var backgroundColor = 'grey';
-      var color = 'white';
       var clickHandler = this.dummy;
       if (success_count > 0) {
         backgroundColor = 'blue';
@@ -75,16 +78,13 @@ var Reply = function (_React$Component) {
 
       return React.createElement(
         'div',
-        { style: { margin: 0 } },
+        null,
         React.createElement(
           'div',
           {
             onClick: clickHandler,
-            style: {
-              backgroundColor: backgroundColor, color: color, padding: 5, margin: 0
-            }
-          },
-          '\uC1A1\uC7A5 \uBC1C\uC1A1'
+            style: { padding: 5, margin: 0, backgroundColor: 'red', color: 'white' } },
+          '\uC8FC\uBB38'
         ),
         React.createElement(
           ReactModal,
@@ -99,7 +99,7 @@ var Reply = function (_React$Component) {
             'h2',
             null,
             success_count,
-            '\uAC1C \uAC70\uB798\uCC98\uC5D0 \uC1A1\uC7A5\uBC88\uD638\uB97C \uBA54\uC77C\uB85C \uBCF4\uB0B4\uACA0\uC2B5\uB2C8\uAE4C?'
+            ' \uAC1C\uB97C \uC8FC\uBB38 \uCC98\uB9AC\uD558\uC2DC\uACA0\uC2B5\uB2C8\uAE4C?'
           ),
           React.createElement(
             'button',
@@ -138,7 +138,9 @@ var Reply = function (_React$Component) {
     value: function clickComplete() {
       var _this2 = this;
 
-      var url = '/mpemail/rest_api/email/reply';
+      console.log('order');
+
+      var url = '/mpemail/rest_api/email/order';
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
       var checkedMids = this.props.checkedMids;
@@ -152,6 +154,10 @@ var Reply = function (_React$Component) {
         data: {
           mids: checkedMids
         },
+        // headers: {
+        //   'Access-Control-Allow-Origin': '*',
+        // },
+        // withCredentials: true,
         credentials: 'same-origin'
       };
 
@@ -166,19 +172,13 @@ var Reply = function (_React$Component) {
         });
 
         var success = _.filter(Object.values(data), function (s) {
-          return s.auto_reply_status == 'complete';
-        });
+          return s.auto_order_status == 'process_success';
+1        });
         var fail = _.filter(Object.values(data), function (s) {
-          return s.auto_reply_status == 'process_fail';
+          return s.auto_order_status == 'process_fail';
         });
 
         var result_msg = success.length + '개 성공 ' + fail.length + '개 실패 하였습니다';
-        _this2.setState({
-          result_msg: result_msg,
-          resultModalIsOpen: true
-        });
-      }).catch(function (error) {
-        var result_msg = error.response;
         _this2.setState({
           result_msg: result_msg,
           resultModalIsOpen: true
@@ -187,7 +187,7 @@ var Reply = function (_React$Component) {
     }
   }]);
 
-  return Reply;
+  return Order;
 }(React.Component);
 
 var mapStateToProps = function mapStateToProps(state, ownProps) {
@@ -198,6 +198,6 @@ var mapStateToProps = function mapStateToProps(state, ownProps) {
   };
 };
 
-Reply = ReactRedux.connect(mapStateToProps, function (dispatch) {
+Order = ReactRedux.connect(mapStateToProps, function (dispatch) {
   return { dispatch: dispatch };
-})(Reply);
+})(Order);

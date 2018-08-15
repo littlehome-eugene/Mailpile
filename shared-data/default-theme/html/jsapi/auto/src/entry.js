@@ -31,6 +31,9 @@ class Entry extends React.Component {
         type: 'UPDATE_STATUS', 
         status: data
       })
+    }).catch(error => {
+      console.log(error.response)
+      
     })
   }
 

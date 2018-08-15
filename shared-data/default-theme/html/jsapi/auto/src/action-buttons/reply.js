@@ -3,7 +3,8 @@ class Reply extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      resultModalIsOpen: false,
     };
 
     this.openModal = this.openModal.bind(this);
@@ -27,7 +28,11 @@ class Reply extends React.Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({
+      modalIsOpen: false,
+      resultModalIsOpen: false,
+      result_msg: '',
+    });
   }
 
   render() {
@@ -74,6 +79,18 @@ class Reply extends React.Component {
           <button onClick={this.closeModal}>취소</button>
           <button onClick={this.clickComplete}>확인</button>
         </ReactModal>
+        
+        <ReactModal
+          isOpen={this.state.resultModalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+        >
+          <div>{this.state.result_msg}</div>
+          <button onClick={this.closeModal}>확인</button>
+        </ReactModal>
+        
+        
       </div>
     )
   }
@@ -95,6 +112,8 @@ class Reply extends React.Component {
       credentials: 'same-origin',
     }
 
+    this.closeModal()
+    
     axios(config).then(
     response => {
       let {data} = response
@@ -102,9 +121,30 @@ class Reply extends React.Component {
         type: 'UPDATE_STATUS', 
         status: data
       })
+
+      let success = _.filter(Object.values(data), (s) => {
+        return s.auto_reply_status == 'complete'
+      })
+      let fail = _.filter(Object.values(data), (s) => {
+        return s.auto_reply_status == 'process_fail'
+      })
+
+      let result_msg = success.length + '개 성공 ' + fail.length + '개 실패 하였습니다'
+      this.setState({
+        result_msg,
+        resultModalIsOpen: true,
+      })
+      
+      
+    }).catch(error => {
+      let result_msg = error.response
+      this.setState({
+        result_msg,
+        resultModalIsOpen: true,
+      })
+      
     })
 
-    this.closeModal()
   }
   
 }

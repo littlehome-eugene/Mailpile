@@ -5,6 +5,13 @@ const store = Redux.createStore(reducers)
 // $(document).ready(function() {
 Mailpile.ActionButtons = {};
 Mailpile.ActionButtons.init = function() {
+  const domContainer4 = document.querySelector('#ann-checkbox-all');
+  ReactDOM.render(
+    <ReactRedux.Provider store={store}>
+      <CheckboxAll/>
+    </ReactRedux.Provider>,
+    domContainer4);
+  
   const domContainer = document.querySelector('#ann-order');
   ReactDOM.render(
     <ReactRedux.Provider store={store}>
