@@ -1,6 +1,5 @@
 'use strict';
 
-const DJANGO_URL = 'http://zibann.kr:10044'
 
 class Order extends React.Component {
   constructor(props) {

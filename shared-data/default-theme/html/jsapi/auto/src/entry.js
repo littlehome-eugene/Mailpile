@@ -1,3 +1,5 @@
+const DJANGO_URL = 'http://127.0.0.1:10044'
+
 class Entry extends React.Component {
   constructor(props) {
     super(props)
