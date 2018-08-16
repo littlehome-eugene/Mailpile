@@ -1,3 +1,4 @@
+const store = Redux.createStore(reducers)
 
 const statusStyles = {
   outer: {

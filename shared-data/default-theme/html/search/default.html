@@ -102,7 +102,6 @@
      {%- include("partials/pile_compose.html") %}
    {%- else %}
      {%- include("partials/search_item.html") %}
-    <div id="ann-dummy"></div>
    {%- endif %}
  {%- endfor %}
   </tbody>
@@ -172,7 +171,6 @@ $(document).ready(function() {
 
   {# if (window.location.pathname.startsWith('/in/inbox/')) { #}
   allMids = [];
-  store = Redux.createStore(reducers)
 
   Mailpile.StatusButton.init();
 

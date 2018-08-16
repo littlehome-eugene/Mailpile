@@ -1,11 +1,12 @@
 
 
-const store = Redux.createStore(reducers)
 
 // $(document).ready(function() {
 Mailpile.ActionButtons = {};
 Mailpile.ActionButtons.init = function() {
   const domContainer4 = document.querySelector('#ann-checkbox-all');
+
+  if (domContainer4) {
   ReactDOM.render(
     <ReactRedux.Provider store={store}>
       <CheckboxAll/>
@@ -32,6 +33,7 @@ Mailpile.ActionButtons.init = function() {
     { store: store },
     React.createElement(Reply, null)
   ), domContainer3);
+  }
   
 }
 // })

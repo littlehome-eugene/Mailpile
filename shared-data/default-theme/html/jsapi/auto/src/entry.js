@@ -1,4 +1,4 @@
-const DJANGO_URL = 'http://abc.com:10044'
+const DJANGO_URL = 'http://localhost:10044'
 
 class Entry extends React.Component {
   constructor(props) {

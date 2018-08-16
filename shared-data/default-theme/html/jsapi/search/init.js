@@ -7,7 +7,7 @@ Mailpile.Search.init = function() {
 
   // Drag Items
   var index_capabilities = $('.pile-results').data('index-capabilities');
-  if (index_capabilities.indexOf('has_tags') >= 0) {
+  if (index_capabilities && index_capabilities.indexOf('has_tags') >= 0) {
     Mailpile.UI.Search.Draggable('td.draggable, td.avatar');
     Mailpile.UI.Search.Droppable('.pile-results tr', 'a.sidebar-tag');
   };
