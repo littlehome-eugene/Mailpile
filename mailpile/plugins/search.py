@@ -20,6 +20,7 @@ from mailpile.util import *
 from mailpile.ui import SuppressHtmlOutput
 from mailpile.vfs import vfs, FilePath
 from mailpile.vcard import AddressInfo
+import os
 
 
 _plugins = PluginManager(builtin=__file__)
@@ -533,7 +534,7 @@ class SearchResults(dict):
 
         # import pdb; pdb.set_trace()
         r = requests.post(
-            "http://127.0.0.1:10044/mpemail/rest_api/email/get_or_create_list",
+            "http://localhost:10044/mpemail/rest_api/email/get_or_create_list",
             json=send_data
         )
 

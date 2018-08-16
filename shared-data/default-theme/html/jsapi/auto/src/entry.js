@@ -1,4 +1,4 @@
-const DJANGO_URL = 'http://127.0.0.1:10044'
+const DJANGO_URL = 'http://abc.com:10044'
 
 class Entry extends React.Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class Entry extends React.Component {
         mids: allMids
       },
       credentials: 'same-origin',
+      crossDomain: true,
     }
 
     axios(config).then(

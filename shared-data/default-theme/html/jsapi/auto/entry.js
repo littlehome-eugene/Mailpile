@@ -6,7 +6,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var DJANGO_URL = 'http://127.0.0.1:10044';
+var DJANGO_URL = 'http://abc.com:10044';
 
 var Entry = function (_React$Component) {
   _inherits(Entry, _React$Component);
@@ -41,7 +41,8 @@ var Entry = function (_React$Component) {
         data: {
           mids: allMids
         },
-        credentials: 'same-origin'
+        credentials: 'same-origin',
+        crossDomain: true
       };
 
       axios(config).then(function (response) {
