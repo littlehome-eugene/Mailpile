@@ -23,7 +23,16 @@ var Entry = function (_React$Component) {
   _createClass(Entry, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.fetchStatus();
+      var _this2 = this;
+
+      this.interval = setInterval(function () {
+        return _this2.fetchStatus();
+      }, 1000);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      clearInterval(this.interval);
     }
   }, {
     key: 'fetchStatus',

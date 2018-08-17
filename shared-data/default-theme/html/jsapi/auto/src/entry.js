@@ -7,7 +7,11 @@ class Entry extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchStatus()
+    this.interval = setInterval(() => this.fetchStatus(), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   fetchStatus() {

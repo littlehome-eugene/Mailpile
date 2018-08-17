@@ -533,10 +533,14 @@ class SearchResults(dict):
         }
 
         # import pdb; pdb.set_trace()
-        r = requests.post(
-            "http://localhost:10044/mpemail/rest_api/email/get_or_create_list",
-            json=send_data
-        )
+        try:
+            r = requests.post(
+                "http://localhost:10044/mpemail/rest_api/email/get_or_create_list",
+                json=send_data
+            )
+        except Exception as e:
+            print(e)
+            pass
 
         # revert to original messages data
         # doing reverse of add_email
