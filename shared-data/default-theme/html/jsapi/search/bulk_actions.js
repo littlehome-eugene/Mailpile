@@ -50,8 +50,11 @@ Mailpile.bulk_actions_update_ui = function() {
       for (var i = 0; i < selected.length; i++) {
         var search = '.pile-message-' + selected[i];
         if (selected[i] == "!all") search = '.pile-message';
-        var tids = $context.find(search).data('tids').split(/,/);
-        for (var j = 0; j < tids.length; j++) have_tags[tids[j]] = true;
+        var tidsData = $context.find(search).data('tids');
+        if (tidsData) {
+          var tids = $context.find(search).data('tids').split(/,/);
+          for (var j = 0; j < tids.length; j++) have_tags[tids[j]] = true;
+        }
       }
 
       Mailpile.show_bulk_actions($context.find('.bulk-actions').find('li'),
