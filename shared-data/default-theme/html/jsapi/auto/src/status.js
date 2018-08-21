@@ -125,11 +125,26 @@ class AutoReplyStatus extends React.Component {
         auto_Status = status[this.mid].auto_reply_status
       }
     }
+
+    let tooltipNode = null
+
+    let tooltipId = `tooltip-${this.mid}`
+    if (auto_Status == 'process_fail') {
+      tooltipNode = (
+        <ReactTooltip id={tooltipId} type='error'>
+          <span>{status[this.mid].auto_reply_error}</span>
+        </ReactTooltip>
+      )
+    }
+
     
     return (
       <div 
         style={statusStyles.outer}>
+        <a data-tip data-for={tooltipId}>  
         <div style={statusStyles.inner(auto_Status)} />
+        </a>
+        {tooltipNode}
       </div>
     )
   }

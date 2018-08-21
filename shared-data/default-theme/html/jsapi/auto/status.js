@@ -146,11 +146,31 @@ var AutoReplyStatus = function (_React$Component2) {
         }
       }
 
+      var tooltipNode = null;
+
+      var tooltipId = 'tooltip-' + this.mid;
+      if (auto_Status == 'process_fail') {
+        tooltipNode = React.createElement(
+          ReactTooltip,
+          { id: tooltipId, type: 'error' },
+          React.createElement(
+            'span',
+            null,
+            status[this.mid].auto_reply_error
+          )
+        );
+      }
+
       return React.createElement(
         'div',
         {
           style: statusStyles.outer },
-        React.createElement('div', { style: statusStyles.inner(auto_Status) })
+        React.createElement(
+          'a',
+          { 'data-tip': true, 'data-for': tooltipId },
+          React.createElement('div', { style: statusStyles.inner(auto_Status) })
+        ),
+        tooltipNode
       );
     }
   }]);
