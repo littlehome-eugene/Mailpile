@@ -100,6 +100,19 @@ class Reply extends React.Component {
     let baseURL = DJANGO_URL
     let { dispatch } = this.props
     let { checkedMids } = this.props
+    let { status } = this.props
+
+    let mids = _.filter(checkedMids, (mid) => {
+
+      if (status[mid].auto_order_status == 'complete' &&
+          _.includes(checkedMids, mid) &&          
+          (status[mid].auto_reply_status == 'initial' ||
+           status[mid].auto_reply_status == 'process_fail')
+         ) {
+        return true
+      }
+      return false
+    })
     
     let config = {
       url,
@@ -107,7 +120,7 @@ class Reply extends React.Component {
       method: 'POST',
       mode: 'no-cors',
       data: {
-        mids: checkedMids
+        mids
       },
       credentials: 'same-origin',
     }

@@ -142,7 +142,16 @@ var Reply = function (_React$Component) {
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
       var checkedMids = this.props.checkedMids;
+      var status = this.props.status;
 
+
+      var mids = _.filter(checkedMids, function (mid) {
+
+        if (status[mid].auto_order_status == 'complete' && _.includes(checkedMids, mid) && (status[mid].auto_reply_status == 'initial' || status[mid].auto_reply_status == 'process_fail')) {
+          return true;
+        }
+        return false;
+      });
 
       var config = {
         url: url,
@@ -150,7 +159,7 @@ var Reply = function (_React$Component) {
         method: 'POST',
         mode: 'no-cors',
         data: {
-          mids: checkedMids
+          mids: mids
         },
         credentials: 'same-origin'
       };

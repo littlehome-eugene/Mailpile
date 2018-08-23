@@ -143,7 +143,16 @@ var Order = function (_React$Component) {
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
       var checkedMids = this.props.checkedMids;
+      var status = this.props.status;
 
+
+      var mids = _.filter(checkedMids, function (mid) {
+
+        if (status[mid].auto_order_status == 'process_fail' || status[mid].auto_order_status == 'initial') {
+          return true;
+        }
+        return false;
+      });
 
       var config = {
         url: url,
@@ -151,7 +160,7 @@ var Order = function (_React$Component) {
         method: 'POST',
         mode: 'no-cors',
         data: {
-          mids: checkedMids
+          mids: mids
         },
         // headers: {
         //   'Access-Control-Allow-Origin': '*',
