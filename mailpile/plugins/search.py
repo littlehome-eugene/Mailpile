@@ -524,23 +524,28 @@ class SearchResults(dict):
         # send to django
         import requests, copy
 
-        # print 'sending data to django server'
         # # print data
 
-        send_data = {
-            'metadata': self['data']['metadata'],
-            'messages': self['data']['messages'],
-        }
-
-        # import pdb; pdb.set_trace()
-        try:
-            r = requests.post(
-                "http://localhost:10044/mpemail/rest_api/email/get_or_create_list",
-                json=send_data
-            )
-        except Exception as e:
-            print(e)
+        if view_pairs:
+            # print 'not sending data to django server'
             pass
+        else:
+            # print 'sending data to django server'
+
+            send_data = {
+                'metadata': self['data']['metadata'],
+                'messages': self['data']['messages'],
+            }
+
+            # import pdb; pdb.set_trace()
+            try:
+                r = requests.post(
+                    "http://localhost:10044/mpemail/rest_api/email/get_or_create_list",
+                    json=send_data
+                )
+            except Exception as e:
+                print(e)
+                pass
 
         # revert to original messages data
         # doing reverse of add_email
