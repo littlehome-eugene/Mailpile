@@ -26,7 +26,8 @@ var OrderComplete = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (OrderComplete.__proto__ || Object.getPrototypeOf(OrderComplete)).call(this, props));
 
     _this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      resultModalIsOpen: false
     };
 
     _this.openModal = _this.openModal.bind(_this);
@@ -55,7 +56,11 @@ var OrderComplete = function (_React$Component) {
   }, {
     key: 'closeModal',
     value: function closeModal() {
-      this.setState({ modalIsOpen: false });
+      this.setState({
+        modalIsOpen: false,
+        resultModalIsOpen: false,
+        result_msg: ''
+      });
     }
   }, {
     key: 'render',
@@ -119,12 +124,33 @@ var OrderComplete = function (_React$Component) {
             { onClick: this.clickComplete },
             '\uD655\uC778'
           )
+        ),
+        React.createElement(
+          ReactModal,
+          {
+            isOpen: this.state.resultModalIsOpen,
+            onRequestClose: this.closeModal,
+            style: customStyles,
+            ariaHideApp: false
+          },
+          React.createElement(
+            'div',
+            null,
+            this.state.result_msg
+          ),
+          React.createElement(
+            'button',
+            { onClick: this.closeModal },
+            '\uD655\uC778'
+          )
         )
       );
     }
   }, {
     key: 'clickComplete',
     value: function clickComplete() {
+      var _this2 = this;
+
       var url = '/mpemail/rest_api/email/order_complete';
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
@@ -148,6 +174,16 @@ var OrderComplete = function (_React$Component) {
           type: 'UPDATE_STATUS',
           status: data
         });
+
+        var error = data.error;
+
+
+        if (error) {
+          _this2.setState({
+            result_msg: error,
+            resultModalIsOpen: true
+          });
+        }
       });
 
       this.closeModal();

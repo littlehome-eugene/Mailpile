@@ -13,7 +13,8 @@ class OrderComplete extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      resultModalIsOpen: false,
     };
 
     this.openModal = this.openModal.bind(this);
@@ -37,7 +38,11 @@ class OrderComplete extends React.Component {
   }
 
   closeModal() {
-    this.setState({modalIsOpen: false});
+    this.setState({
+      modalIsOpen: false,
+      resultModalIsOpen: false,
+      result_msg: '',
+    });
   }
 
   render() {
@@ -82,6 +87,17 @@ class OrderComplete extends React.Component {
           <button onClick={this.closeModal}>취소</button>
           <button onClick={this.clickComplete}>확인</button>
         </ReactModal>
+
+        <ReactModal
+          isOpen={this.state.resultModalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}
+          ariaHideApp={false}
+        >
+          <div>{this.state.result_msg}</div>
+          <button onClick={this.closeModal}>확인</button>
+        </ReactModal>
+        
       </div>
     )
   }
@@ -110,6 +126,16 @@ class OrderComplete extends React.Component {
         type: 'UPDATE_STATUS', 
         status: data
       })
+
+      let { error } = data
+
+      if (error) {
+        this.setState({
+          result_msg: error,
+          resultModalIsOpen: true,
+        })
+        
+      }
     })
 
     this.closeModal()
