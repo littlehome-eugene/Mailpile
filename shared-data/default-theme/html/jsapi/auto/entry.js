@@ -17,22 +17,21 @@ var Entry = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Entry.__proto__ || Object.getPrototypeOf(Entry)).call(this, props));
 
     _this.fetchStatus = _this.fetchStatus.bind(_this);
+    _this.isFetching = false;
     return _this;
   }
 
   _createClass(Entry, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      var _this2 = this;
-
-      this.interval = setInterval(function () {
-        return _this2.fetchStatus();
-      }, 1000);
+      // this.interval = setInterval(this.fetchStatus, 1500);
+      // console.log('setInterval')
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      clearInterval(this.interval);
+      // clearInterval(this.interval);
+      // console.log('clearInterval')
     }
   }, {
     key: 'fetchStatus',
@@ -41,6 +40,7 @@ var Entry = function (_React$Component) {
       var baseURL = DJANGO_URL;
       var dispatch = this.props.dispatch;
 
+      console.log('fetching');
 
       var config = {
         url: url,
@@ -54,6 +54,7 @@ var Entry = function (_React$Component) {
         crossDomain: true
       };
 
+      var self = this;
       axios(config).then(function (response) {
         var data = response.data;
 
@@ -61,13 +62,20 @@ var Entry = function (_React$Component) {
           type: 'UPDATE_STATUS',
           status: data
         });
+        self.isFetching = false;
       }).catch(function (error) {
         console.log(error.response);
+        self.isFetching = false;
       });
     }
   }, {
     key: 'render',
     value: function render() {
+      // if (!this.isFetching) {
+      //   this.isFetching = true
+
+      //   this.fetchStatus()
+      // }
       return React.createElement('div', null);
     }
   }]);
@@ -86,16 +94,16 @@ Entry = ReactRedux.connect(mapStateToProps, function (dispatch) {
   return { dispatch: dispatch };
 })(Entry);
 
-$.propHooks.checked = {
-  set: function set(el, value) {
-    if (el.checked !== value) {
-      trigger = true;
-    } else {
-      trigger = false;
-    }
-    el.checked = value;
-    if (trigger) {
-      $(el).trigger('change');
-    }
-  }
-};
+// $.propHooks.checked = {
+//     set: function (el, value) {
+//         if (el.checked !== value) {
+//             trigger = true;
+//         } else {
+//             trigger = false;
+//         }
+//         el.checked = value;
+//         if (trigger) {
+//             $(el).trigger('change');
+//         }
+//     }
+// };

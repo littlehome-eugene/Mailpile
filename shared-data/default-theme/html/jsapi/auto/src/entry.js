@@ -4,20 +4,25 @@ class Entry extends React.Component {
   constructor(props) {
     super(props)
     this.fetchStatus = this.fetchStatus.bind(this)
+    this.isFetching = false
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => this.fetchStatus(), 1000);
+    // this.interval = setInterval(this.fetchStatus, 1500);
+    // console.log('setInterval')
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
+    // console.log('clearInterval')
   }
+
 
   fetchStatus() {
     let url = '/mpemail/rest_api/email/status'
     let baseURL = DJANGO_URL
     let { dispatch } = this.props
+    console.log('fetching')
     
     let config = {
       url,
@@ -31,6 +36,7 @@ class Entry extends React.Component {
       crossDomain: true,
     }
 
+    let self = this
     axios(config).then(
     response => {
       let {data} = response
@@ -38,13 +44,19 @@ class Entry extends React.Component {
         type: 'UPDATE_STATUS', 
         status: data
       })
+      self.isFetching = false
     }).catch(error => {
       console.log(error.response)
-      
+      self.isFetching = false
     })
   }
 
   render() {
+    // if (!this.isFetching) {
+    //   this.isFetching = true
+
+    //   this.fetchStatus()
+    // }
     return (
       <div></div>
     )
@@ -68,16 +80,16 @@ Entry = ReactRedux.connect(
 )(Entry)
 
 
-$.propHooks.checked = {
-    set: function (el, value) {
-        if (el.checked !== value) {
-            trigger = true;
-        } else {
-            trigger = false;
-        }
-        el.checked = value;
-        if (trigger) {
-            $(el).trigger('change');
-        }
-    }
-};
+// $.propHooks.checked = {
+//     set: function (el, value) {
+//         if (el.checked !== value) {
+//             trigger = true;
+//         } else {
+//             trigger = false;
+//         }
+//         el.checked = value;
+//         if (trigger) {
+//             $(el).trigger('change');
+//         }
+//     }
+// };

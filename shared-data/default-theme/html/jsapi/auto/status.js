@@ -8,6 +8,30 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var store = Redux.createStore(reducers);
 
+// $('#pile-bottom').on('click', '', fetchStatus)
+// $('#pile-previous').click(fetchStatus)
+// $('#pile-next').click(fetchStatus)
+// $('#pile-more').click(fetchStatus)
+
+
+// jQuery(window).on('hashchange', function(){
+//     var hash = window.location.hash;
+//     console.log(hash);
+// });
+
+// var href = ''
+// function check() {
+//   if (href != window.location.href) {
+//     href = window.location.href
+//     fetchStatus()
+
+//   }
+// }
+
+// console.log('setInterval')
+// setInterval(check, 1500);
+
+
 var statusStyles = {
   outer: {
     borderRadius: 5,
